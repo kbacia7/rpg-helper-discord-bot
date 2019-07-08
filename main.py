@@ -8,23 +8,29 @@ from argparser import ArgParser
 from mention import Mention
 from playerscheck import PlayersCheck
 from permission import PermissionChecker
-
+from settingmanager import SettingManager
+from checkplayerstask import CheckPlayersTask
 from commands.talk import TalkCommand
 from commands.check import CheckCommand
+from path import Path
+if __name__ == "__main__":
+   argParser = ArgParser()
+   commandExecutor = CommandExecutor({})
+   client = ExDiscordClient(commandExecutor, argParser)
+   mention = Mention()
+   playersCheck = PlayersCheck(client)
+   settingManager = SettingManager()
+   permissionChecker = PermissionChecker(settingManager)
+   checkPlayersTask = CheckPlayersTask(client, settingManager, playersCheck)
+   talkCommand = TalkCommand(client, mention, permissionChecker)
+   checkCommand = CheckCommand(client, mention, permissionChecker, playersCheck, settingManager)
+   commandsToInject = {
+      "talk": talkCommand,
+      "check": checkCommand
+   }
 
-argParser = ArgParser()
-commandExecutor = CommandExecutor({})
-client = ExDiscordClient(commandExecutor, argParser)
-mention = Mention()
-playersCheck = PlayersCheck(client)
-permissionChecker = PermissionChecker()
-
-talkCommand = TalkCommand(client, mention, permissionChecker)
-checkCommand = CheckCommand(client, mention, permissionChecker, playersCheck)
-commandsToInject = {
-   "talk": talkCommand,
-   "check": checkCommand
-}
-commandExecutor.commands = commandsToInject
-client.commandExecutor = commandExecutor
-client.run('<YOUR_TOKEN_HERE>')
+   settingObj = settingManager.LoadSettings()
+   checkPlayersTask.StartTask()
+   commandExecutor.commands = commandsToInject
+   client.commandExecutor = commandExecutor
+   client.run(settingObj['discordToken'])
