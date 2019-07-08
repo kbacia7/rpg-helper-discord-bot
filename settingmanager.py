@@ -15,6 +15,7 @@ class SettingManager():
       defaultSettingDict = {
          'discordToken': '', 
          'adminRolesIds': [], 
+         "channelLookingForThread": "",
          "checkedPlayers": [],
          "msgForInactiveUsers": "",
          "msgForUsersWithoutCharacter": ""  ,
