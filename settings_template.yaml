@@ -1,0 +1,10 @@
+discordToken: "" #your discord token
+adminRolesIds: #id's roles, users with one of this group is a administrator's and can use admin commands
+  - ""
+msgForUsersWithoutCharacter: > #message for users without character 
+  ""
+msgForInactiveUsers: > #message for users who have character but no playing active
+  ""
+
+checkedUsersWithoutAccept: {} #saved by task users who not have a accepted character
+checkedInactiveUsers: {} #saved by task users who is not active
