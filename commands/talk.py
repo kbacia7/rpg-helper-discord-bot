@@ -12,7 +12,6 @@ class TalkCommand(baseCommand):
       if self.permissionChecker.IsAdmin(member) is False:
          return
       if len(args) >= 2:
-         channelForBotTest = discord.utils.find(lambda c: c.name == "klaudiusz-testing", self.discordClient.get_all_channels())
          channel = self.discordClient.get_channel(self.mention.getInt(args[0]))
          if channel is not None:
             isTimeGiven = pytimeparse.parse(args[1])
@@ -22,4 +21,3 @@ class TalkCommand(baseCommand):
             else:
                msg = " ".join(args[1:])
                await channel.send(msg)
-      #await self.discordClient.logout()5
