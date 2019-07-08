@@ -24,7 +24,7 @@ class PlayersCheck():
                if mode is PlayerCheckMethod.JOIN_DATE:
                   if datetime.datetime.now() > member.joined_at + datetime.timedelta(days=modeArg):
                      detectedUsersNames.append(member)
-               else:
+               elif mode is PlayerCheckMethod.MESSAGE_ADD:
                   if datetime.datetime.now() > member.joined_at + datetime.timedelta(days=modeArg):
                      groupDict = [i for i in groupsToCheck if i['id'] == roleId][0]
                      channels = groupDict['channels']
