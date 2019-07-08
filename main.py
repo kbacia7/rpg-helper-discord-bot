@@ -9,7 +9,8 @@ from mention import Mention
 from playerscheck import PlayersCheck
 from permission import PermissionChecker
 from settingmanager import SettingManager
-from tasks.checkplayerstask import CheckPlayersTask
+from autotasks.removelookingforthreademessages import RemoveLookingForThreadMessages
+from autotasks.checkplayerstask import CheckPlayersTask
 from commands.talk import TalkCommand
 from commands.check import CheckCommand
 from path import Path
@@ -22,6 +23,7 @@ if __name__ == "__main__":
    settingManager = SettingManager()
    permissionChecker = PermissionChecker(settingManager)
    checkPlayersTask = CheckPlayersTask(client, settingManager, playersCheck)
+   removeLookingForThreadMessages = RemoveLookingForThreadMessages(client, settingManager)
    talkCommand = TalkCommand(client, mention, permissionChecker)
    checkCommand = CheckCommand(client, mention, permissionChecker, playersCheck, settingManager)
    commandsToInject = {
@@ -31,6 +33,7 @@ if __name__ == "__main__":
 
    settingObj = settingManager.LoadSettings()
    checkPlayersTask.Start()
+   removeLookingForThreadMessages.Start()
    commandExecutor.commands = commandsToInject
    client.commandExecutor = commandExecutor
    client.run(settingObj['discordToken'])

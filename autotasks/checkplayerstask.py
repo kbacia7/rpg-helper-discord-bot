@@ -1,6 +1,6 @@
 import discord
 from playercheckmethod import PlayerCheckMethod
-from tasks.base import BaseTask
+from autotasks.base import BaseTask
 import asyncio
 import datetime
 class CheckPlayersTask(BaseTask):
