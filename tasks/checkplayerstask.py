@@ -1,17 +1,18 @@
 import discord
 from playercheckmethod import PlayerCheckMethod
+from tasks.base import BaseTask
 import asyncio
 import datetime
-class CheckPlayersTask():
+class CheckPlayersTask(BaseTask):
    def __init__(self, discordClient, settingManager, playersCheck):
       self.playersCheck = playersCheck
       self.settingManager = settingManager
-      self.discordClient = discordClient
+      super(CheckPlayersTask, self).__init__(discordClient)
+
+   def Start(self):
+      super(CheckPlayersTask, self).Start(21600)
    
-   def StartTask(self):
-      asyncio.ensure_future(self.CheckPlayers(21600)) 
-   
-   async def CheckPlayers(self, time):
+   async def Run(self, time):
       while True:
          await asyncio.sleep(time)
          channelToSend = discord.utils.find(lambda c: c.name == "klaudiusz-testing", self.discordClient.get_all_channels())
@@ -43,5 +44,6 @@ class CheckPlayersTask():
                await user.send(msgForInactiveUsers)
                await channelToSendLog.send("<@{0}> otrzymał dnia {1} powiadomienie o braku wątku od przynajmniej 5 dni".format(user.id, sendedTime))
          self.settingManager.UpdateSettings(settingObj)
+         
 
 

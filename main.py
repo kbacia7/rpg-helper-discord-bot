@@ -9,7 +9,7 @@ from mention import Mention
 from playerscheck import PlayersCheck
 from permission import PermissionChecker
 from settingmanager import SettingManager
-from checkplayerstask import CheckPlayersTask
+from tasks.checkplayerstask import CheckPlayersTask
 from commands.talk import TalkCommand
 from commands.check import CheckCommand
 from path import Path
@@ -30,7 +30,7 @@ if __name__ == "__main__":
    }
 
    settingObj = settingManager.LoadSettings()
-   checkPlayersTask.StartTask()
+   checkPlayersTask.Start()
    commandExecutor.commands = commandsToInject
    client.commandExecutor = commandExecutor
    client.run(settingObj['discordToken'])
