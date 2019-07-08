@@ -6,9 +6,10 @@ class SettingManager():
       self.settings = None
       pass
    
-   def UpdateSettings(self, object): 
+   def UpdateSettings(self, obj): 
       with open(Path.SETTINGS.value, 'w', encoding="utf-8") as settingFile:
-         yaml.dump(object, settingFile, allow_unicode=True)
+         yaml.dump(obj, settingFile, allow_unicode=True)
+      self.settings = obj
 
    def CreateSettings(self):
       defaultSettingDict = {
