@@ -12,6 +12,7 @@ from settingmanager import SettingManager
 from getlastmessage import GetLastMessage
 from autotasks.removelookingforthreademessages import RemoveLookingForThreadMessages
 from autotasks.checkplayerstask import CheckPlayersTask
+from autotasks.checkplayerscommand import CheckPlayersCommand
 from commands.talk import TalkCommand
 from commands.check import CheckCommand
 from path import Path
@@ -26,8 +27,9 @@ if __name__ == "__main__":
    getLastMessage = GetLastMessage(client)
    checkPlayersTask = CheckPlayersTask(client, settingManager, playersCheck)
    removeLookingForThreadMessages = RemoveLookingForThreadMessages(client, settingManager)
+   checkPlayersCommandTask = CheckPlayersCommand(client, settingManager, playersCheck, getLastMessage)
    talkCommand = TalkCommand(client, mention, permissionChecker)
-   checkCommand = CheckCommand(client, mention, permissionChecker, playersCheck, settingManager, getLastMessage)
+   checkCommand = CheckCommand(client, mention, permissionChecker, checkPlayersCommandTask)
    commandsToInject = {
       "talk": talkCommand,
       "check": checkCommand
