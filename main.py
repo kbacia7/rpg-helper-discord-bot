@@ -9,6 +9,7 @@ from mention import Mention
 from playerscheck import PlayersCheck
 from permission import PermissionChecker
 from settingmanager import SettingManager
+from getlastmessage import GetLastMessage
 from autotasks.removelookingforthreademessages import RemoveLookingForThreadMessages
 from autotasks.checkplayerstask import CheckPlayersTask
 from commands.talk import TalkCommand
@@ -22,10 +23,11 @@ if __name__ == "__main__":
    playersCheck = PlayersCheck(client)
    settingManager = SettingManager()
    permissionChecker = PermissionChecker(settingManager)
+   getLastMessage = GetLastMessage(client)
    checkPlayersTask = CheckPlayersTask(client, settingManager, playersCheck)
    removeLookingForThreadMessages = RemoveLookingForThreadMessages(client, settingManager)
    talkCommand = TalkCommand(client, mention, permissionChecker)
-   checkCommand = CheckCommand(client, mention, permissionChecker, playersCheck, settingManager)
+   checkCommand = CheckCommand(client, mention, permissionChecker, playersCheck, settingManager, getLastMessage)
    commandsToInject = {
       "talk": talkCommand,
       "check": checkCommand
