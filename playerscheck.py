@@ -27,7 +27,6 @@ class PlayersCheck():
                elif mode is PlayerCheckMethod.MESSAGE_ADD:
                   if datetime.datetime.now() > member.joined_at + datetime.timedelta(days=modeArg):
                      groupDict = [i for i in groupsToCheck if i['id'] == roleId][0]
-                     channels = groupDict['channels']
                      message = discord.utils.find(lambda m: m.author == member, preLoadedMessages)
                      if message is None:
                         detectedUsersNames.append(member)
