@@ -19,10 +19,10 @@ from path import Path
 if __name__ == "__main__":
    argParser = ArgParser()
    commandExecutor = CommandExecutor({})
-   client = ExDiscordClient(commandExecutor, argParser)
-   mention = Mention()
-   playersCheck = PlayersCheck(client)
    settingManager = SettingManager()
+   client = ExDiscordClient(commandExecutor, argParser, settingManager)
+   mention = Mention()
+   playersCheck = PlayersCheck(client, settingManager)
    permissionChecker = PermissionChecker(settingManager)
    getLastMessage = GetLastMessage(client)
    checkPlayersTask = CheckPlayersTask(client, settingManager, playersCheck)

@@ -2,8 +2,9 @@ import discord
 import datetime
 from playercheckmethod import PlayerCheckMethod
 class PlayersCheck():
-   def __init__(self, discordClient):
+   def __init__(self, discordClient, settingManager):
       self.discordClient = discordClient
+      self.settingManager = settingManager
       pass
          
    async def Check(self, groupsToCheck, mode, modeArg):
@@ -11,6 +12,7 @@ class PlayersCheck():
       groupsIds = [d['id'] for d in groupsToCheck]
       detectedUsersNames = []
       preLoadedMessages = []
+      settingObj = self.settingManager.LoadSettings()
       if mode is PlayerCheckMethod.MESSAGE_ADD:
          for channelsIds in [c['channels'] for c in groupsToCheck]:
             for channelId in channelsIds:
@@ -25,8 +27,11 @@ class PlayersCheck():
                   if datetime.datetime.now() > member.joined_at + datetime.timedelta(days=modeArg):
                      detectedUsersNames.append(member)
                elif mode is PlayerCheckMethod.MESSAGE_ADD:
-                  if datetime.datetime.now() > member.joined_at + datetime.timedelta(days=modeArg):
-                     groupDict = [i for i in groupsToCheck if i['id'] == roleId][0]
+                  checkFromDate = member.joined_at
+                  if str(roleId) == "575301044695728158":
+                     if str(member.id) in settingObj['playerFromDate']:
+                        checkFromDate = settingObj['playerFromDate'][str(member.id)]
+                  if datetime.datetime.now() > checkFromDate + datetime.timedelta(days=modeArg): 
                      message = discord.utils.find(lambda m: m.author == member, preLoadedMessages)
                      if message is None:
                         detectedUsersNames.append(member)
