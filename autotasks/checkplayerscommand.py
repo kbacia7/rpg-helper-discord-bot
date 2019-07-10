@@ -24,7 +24,6 @@ class CheckPlayersCommand(BaseTask):
             fullMode = True
       usersWithoutAccept = await self.playersCheck.Check([{'id': '572897687502848034', 'channels': ['572896095374409730']}], PlayerCheckMethod.JOIN_DATE, 2)
       if channelToSend is not None:
-         settingObj = self.settingManager.LoadSettings()
          msg = "Przyjezdni bez KP od dwóch dni:\n"
          for user in usersWithoutAccept:
             lastMessage = None
