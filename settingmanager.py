@@ -16,11 +16,12 @@ class SettingManager():
          'discordToken': '', 
          'adminRolesIds': [], 
          "channelLookingForThread": "",
-         "checkedPlayers": [],
          "msgForInactiveUsers": "",
          "msgForUsersWithoutCharacter": ""  ,
          "checkedInactiveUsers": {},
-         "checkedUsersWithoutAccept": {}
+         "checkedUsersWithoutAccept": {},
+         "playerFromDate": {},
+         "categoriesForLookingInactivePlayers": []
       }
       self.UpdateSettings(defaultSettingDict)
       
