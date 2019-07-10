@@ -9,3 +9,6 @@ msgForInactiveUsers: |- #message for users who have character but no playing act
 
 checkedUsersWithoutAccept: {} #saved by task users who not have a accepted character
 checkedInactiveUsers: {} #saved by task users who is not active
+
+playerFromDate: {}
+categoriesForLookingInactivePlayers: []
