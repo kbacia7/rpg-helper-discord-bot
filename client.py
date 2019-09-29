@@ -28,7 +28,8 @@ class ExDiscordClient(DiscordClientBase):
     async def on_member_update(self, before, after):
         beforeRolesIds = [str(r.id) for r in before.roles]
         afterRolesIds = [str(r.id) for r in after.roles]
-        playerRole = '575301044695728158'
+        settingObj = self.settingManager.LoadSettings()
+        playerRole = settingObj['roleWithPlayersWithCharacter']
         if playerRole not in beforeRolesIds and playerRole in afterRolesIds:
            settingObj = self.settingManager.LoadSettings()
            settingObj['playerFromDate'][str(after.id)] = datetime.datetime.now()
@@ -45,4 +46,4 @@ class ExDiscordClient(DiscordClientBase):
            del settingObj['checkedUsersWithoutAccept'][memberId]
         if memberId in settingObj['playerFromDate']:
            del settingObj['playerFromDate'][memberId]
-        settingObj.UpdateSettings(settingObj)
+        self.settingManager.UpdateSettings(settingObj)

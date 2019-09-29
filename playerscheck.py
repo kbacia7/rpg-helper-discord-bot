@@ -28,9 +28,6 @@ class PlayersCheck():
                      detectedUsersNames.append(member)
                elif mode is PlayerCheckMethod.MESSAGE_ADD:
                   checkFromDate = member.joined_at
-                  if str(roleId) == "575301044695728158":
-                     if str(member.id) in settingObj['playerFromDate']:
-                        checkFromDate = settingObj['playerFromDate'][str(member.id)]
                   if datetime.datetime.now() > checkFromDate + datetime.timedelta(days=modeArg): 
                      message = discord.utils.find(lambda m: m.author == member, preLoadedMessages)
                      if message is None:

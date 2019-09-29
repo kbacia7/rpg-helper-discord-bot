@@ -10,7 +10,6 @@ from playerscheck import PlayersCheck
 from permission import PermissionChecker
 from settingmanager import SettingManager
 from getlastmessage import GetLastMessage
-from autotasks.removelookingforthreademessages import RemoveLookingForThreadMessages
 from autotasks.checkplayerstask import CheckPlayersTask
 from autotasks.checkplayerscommand import CheckPlayersCommand
 from commands.talk import TalkCommand
@@ -26,7 +25,6 @@ if __name__ == "__main__":
    permissionChecker = PermissionChecker(settingManager)
    getLastMessage = GetLastMessage(client)
    checkPlayersTask = CheckPlayersTask(client, settingManager, playersCheck)
-   removeLookingForThreadMessages = RemoveLookingForThreadMessages(client, settingManager)
    checkPlayersCommandTask = CheckPlayersCommand(client, settingManager, playersCheck, getLastMessage)
    talkCommand = TalkCommand(client, mention, permissionChecker)
    checkCommand = CheckCommand(client, mention, permissionChecker, checkPlayersCommandTask)
@@ -37,7 +35,6 @@ if __name__ == "__main__":
 
    settingObj = settingManager.LoadSettings()
    checkPlayersTask.Start()
-   removeLookingForThreadMessages.Start()
    commandExecutor.commands = commandsToInject
    client.commandExecutor = commandExecutor
    client.run(settingObj['discordToken'])

@@ -7,7 +7,7 @@ class SettingManager():
       pass
    
    def UpdateSettings(self, obj): 
-      with open(Path.SETTINGS.value, 'w', encoding="utf-8") as settingFile:
+      with open(Path.SETTINGS.value, 'w', encoding='utf-8') as settingFile:
          yaml.dump(obj, settingFile, allow_unicode=True)
       self.settings = obj
 
@@ -15,13 +15,17 @@ class SettingManager():
       defaultSettingDict = {
          'discordToken': '', 
          'adminRolesIds': [], 
-         "channelLookingForThread": "",
-         "msgForInactiveUsers": "",
-         "msgForUsersWithoutCharacter": ""  ,
-         "checkedInactiveUsers": {},
-         "checkedUsersWithoutAccept": {},
-         "playerFromDate": {},
-         "categoriesForLookingInactivePlayers": []
+         'roleWithPlayersWithoutCharacter': '',
+         'roleWithPlayersWithCharacter': '',
+         'channelWithLogs': '',
+         'channelToReceiveCommands': '',
+         'channelWithPlayersCharacters': '',
+         'msgForInactiveUsers': '',
+         'msgForUsersWithoutCharacter': '',
+         'checkedInactiveUsers': {},
+         'checkedUsersWithoutAccept': {},
+         'categoriesForLookingInactivePlayers': [],
+         'offtopicCategories': []
       }
       self.UpdateSettings(defaultSettingDict)
       

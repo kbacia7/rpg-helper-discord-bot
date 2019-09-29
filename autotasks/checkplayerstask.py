@@ -15,11 +15,11 @@ class CheckPlayersTask(BaseTask):
    async def Run(self, time):
       while True:
          await asyncio.sleep(time)
-         channelToSend = discord.utils.find(lambda c: c.name == "klaudiusz-testing", self.discordClient.get_all_channels())
-         channelToSendLog = discord.utils.find(lambda c: c.name == "logi", self.discordClient.get_all_channels())
-         #await channelToSend.send("Wysyłane z taska co minutę <3")
-         usersWithoutAccept = await self.playersCheck.Check([{'id': '572897687502848034', 'channels': ['572896095374409730']}], PlayerCheckMethod.JOIN_DATE, 2)
-         getIdsFromChannelsInCategories = ['573189641797238795', '573189424897064964', '573189367137566750', '573189223608352779', '573189156717592586', '573100293240258629']
+         settingObj = self.settingManager.LoadSettings()
+         channelToSendLog = discord.utils.find(lambda c: c.id == int(settingObj['channelWithLogs']), self.discordClient.get_all_channels())
+
+         usersWithoutAccept = await self.playersCheck.Check([{'id': settingObj['roleWithPlayersWithoutCharacter'], 'channels': [settingObj['channelWithPlayersCharacters']]}], PlayerCheckMethod.JOIN_DATE, 2)
+         getIdsFromChannelsInCategories = settingObj['categoriesForLookingInactivePlayers']
          channelsToCheck = []
          thisGuild = self.discordClient.guilds[0]
          for categoryId in getIdsFromChannelsInCategories:
@@ -27,8 +27,7 @@ class CheckPlayersTask(BaseTask):
             for channel in category.channels:
                channelsToCheck.append(str(channel.id))
          
-         inactiveUsers = await self.playersCheck.Check([{'id': '575301044695728158', 'channels': channelsToCheck}], PlayerCheckMethod.MESSAGE_ADD, 5)
-         settingObj = self.settingManager.LoadSettings()
+         inactiveUsers = await self.playersCheck.Check([{'id': settingObj['roleWithPlayersWithCharacter'], 'channels': channelsToCheck}], PlayerCheckMethod.MESSAGE_ADD, 5)
          msgForUsersWithoutAccept = settingObj['msgForUsersWithoutCharacter']
          msgForInactiveUsers = settingObj['msgForInactiveUsers']
          for user in usersWithoutAccept:
