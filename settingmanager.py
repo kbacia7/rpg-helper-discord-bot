@@ -20,10 +20,12 @@ class SettingManager():
          'channelWithLogs': '',
          'channelToReceiveCommands': '',
          'channelWithPlayersCharacters': '',
+         'ignoredChannelsForStats': [],
          'msgForInactiveUsers': '',
          'msgForUsersWithoutCharacter': '',
          'checkedInactiveUsers': {},
          'checkedUsersWithoutAccept': {},
+         'categoriesForStats': [],
          'categoriesForLookingInactivePlayers': [],
          'offtopicCategories': []
       }

@@ -4,16 +4,16 @@ from autotasks.base import BaseTask
 from getlastmessagemode import GetLastMessageMode
 import datetime
 
-class CheckPlayersCommand(BaseTask):
+class CheckPlayersCommandTask(BaseTask):
    def __init__(self, discordClient, settingManager, playersCheck, getLastMessage):
       self.settingManager = settingManager
       self.playersCheck = playersCheck
       self.getLastMessage = getLastMessage
       self.injectedArgs = []
-      super(CheckPlayersCommand, self).__init__(discordClient)
+      super(CheckPlayersCommandTask, self).__init__(discordClient)
 
    def Start(self):
-      super(CheckPlayersCommand, self).Start(0)
+      super(CheckPlayersCommandTask, self).Start(0)
    
    async def Run(self, time):
       settingObj = self.settingManager.LoadSettings()

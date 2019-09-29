@@ -6,6 +6,7 @@ roleWithPlayersWithCharacter: '', #id role with players with character
 channelWithLogs: '', #channel id where bot send logs
 channelToReceiveCommands: '', #channel id from which bot receive commands
 channelWithPlayersCharacters: '', #channel id where players send characters
+ignoredChannelsForStats: [] #channels ignored when calculate stats
 
 msgForUsersWithoutCharacter: |- #message for users without character 
   ""
@@ -16,5 +17,6 @@ msgForInactiveUsers: |- #message for users who have character but no playing act
 checkedUsersWithoutAccept: {} #saved by task users who not have a accepted character
 checkedInactiveUsers: {} #saved by task users who is not active
 
+categoriesForStats: [] #category id's to stats
 categoriesForLookingInactivePlayers: [] #category id's where players play's
 offtopicCategories: [] #category id's with offtopic content
