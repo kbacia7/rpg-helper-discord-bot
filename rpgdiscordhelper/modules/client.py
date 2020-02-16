@@ -1,5 +1,7 @@
 import discord
 import datetime
+from rpgdiscordhelper.modules.settingname import SettingName
+
 class DiscordClientBase(discord.Client):
     def __init__(self, commandExecutor, argparser, settingManager):
         self.commandExecutor = commandExecutor
@@ -9,27 +11,26 @@ class DiscordClientBase(discord.Client):
 
 class ExDiscordClient(DiscordClientBase):
     async def on_ready(self):
-        activity = discord.Activity(name='graczy przez magiczną kulę', type=discord.ActivityType.watching)
-        await self.change_presence(activity=activity)
         print('Logged on as {0}!'.format(self.user))
 
     async def on_message(self, message):
-        settingObj = self.settingManager.LoadSettings()
-        if message is None or len(message.content) <= 0 or message.author == self.user:
-           return
-        if message.channel.category.id in settingObj['categoriesForLookingInactivePlayers'] and str(message.author.id) in settingObj['checkedInactiveUsers']:
-            del settingObj['checkedInactiveUsers'][str(message.author.id)]
-            settingObj.UpdateSettings(settingObj)
+        if message is not None and message.guild is not None:
+           settingObj = self.settingManager.LoadSettings(message.guild.id)
+           if len(message.content) <= 0 or message.author == self.user:
+              return
+           if message.channel.category.id in settingObj[SettingName.CATEGORY_FOR_LOOKING_PLAYERS.value] and str(message.author.id) in settingObj['checkedInactiveUsers']:
+              del settingObj['checkedInactiveUsers'][str(message.author.id)]
+              settingObj.UpdateSettings(settingObj)
 
-        if message.content[0] == '/':
-           data = self.argparser.Parse(message.content)
-           await self.commandExecutor.Execute(data[0], message.author, data[1:])
+           if message.content[0] == '/':
+              data = self.argparser.Parse(message.content)
+              await self.commandExecutor.Execute(data[0], message.author, message.channel, data[1:])
 
-    async def on_member_update(self, before, after):
+    """async def on_member_update(self, before, after):
         beforeRolesIds = [str(r.id) for r in before.roles]
         afterRolesIds = [str(r.id) for r in after.roles]
         settingObj = self.settingManager.LoadSettings()
-        playerRole = settingObj['roleWithPlayersWithCharacter']
+        playerRole = settingObj[SettingName.PLAYER_WITH_CHARACTER_ROLE_ID.value]
         if playerRole not in beforeRolesIds and playerRole in afterRolesIds:
            settingObj = self.settingManager.LoadSettings()
            settingObj['playerFromDate'][str(after.id)] = datetime.datetime.now()
@@ -46,4 +47,4 @@ class ExDiscordClient(DiscordClientBase):
            del settingObj['checkedUsersWithoutAccept'][memberId]
         if memberId in settingObj['playerFromDate']:
            del settingObj['playerFromDate'][memberId]
-        self.settingManager.UpdateSettings(settingObj)
+        self.settingManager.UpdateSettings(settingObj)"""

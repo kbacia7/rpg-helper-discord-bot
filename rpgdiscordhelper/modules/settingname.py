@@ -1,0 +1,15 @@
+from enum import Enum
+class SettingName(Enum):
+    DISCORD_TOKEN = 'discord_token'
+    DATABASE_URL = 'database_url'
+    ADMIN_ROLE_ID = 'admin_role_id'
+    PLAYER_WITHOUT_CHARACTER_ROLE_ID = 'player_without_character_role_id'
+    PLAYER_WITH_CHARACTER_ROLE_ID = 'player_with_character_role_id'
+    LOGS_CHANNEL_ID = 'logs_channel_id'
+    CHARACTERS_CHANNEL_ID = 'characters_channel_id'
+    MESSAGE_FOR_INACTIVE_PLAYERS = 'message_for_inactive'
+    MESSAGE_FOR_PLAYERS_WITHOUT_CHARACTER = 'message_for_players_without_character'
+    CATEGORY_FOR_STATS = 'stat_category_id'
+    CATEGORY_FOR_LOOKING_PLAYERS = 'search_messages_category_id'
+    OFFTOPIC_CATEGORY = 'offtopic_category_id'
+    IGNORED_CHANNELS_FOR_STATS = 'ignored_stats_channel_id'
