@@ -1,22 +1,2 @@
-discordToken: "" #your discord token
-adminRolesIds: #id's roles, users with one of this group is a administrator's and can use admin commands
-  - ""
-roleWithPlayersWithoutCharacter: '', #id role with players without character
-roleWithPlayersWithCharacter: '', #id role with players with character 
-channelWithLogs: '', #channel id where bot send logs
-channelToReceiveCommands: '', #channel id from which bot receive commands
-channelWithPlayersCharacters: '', #channel id where players send characters
-ignoredChannelsForStats: [] #channels ignored when calculate stats
-
-msgForUsersWithoutCharacter: |- #message for users without character 
-  ""
-msgForInactiveUsers: |- #message for users who have character but no playing active
-  ""
-
-
-checkedUsersWithoutAccept: {} #saved by task users who not have a accepted character
-checkedInactiveUsers: {} #saved by task users who is not active
-
-categoriesForStats: [] #category id's to stats
-categoriesForLookingInactivePlayers: [] #category id's where players play's
-offtopicCategories: [] #category id's with offtopic content
+database_url: '' #sqlalchemy URL to database
+discord_token: '' #your Discord bot token
