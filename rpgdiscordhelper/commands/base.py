@@ -4,6 +4,6 @@ class BaseCommand():
       self.mention = mention
       self.permissionChecker = permissionChecker
 
-   async def Execute(self, args):
+   async def Execute(self, member, channel, args):
       pass
       

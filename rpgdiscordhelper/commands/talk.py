@@ -8,7 +8,7 @@ class TalkCommand(baseCommand):
       await asyncio.sleep(time)
       await channel.send(message)
 
-   async def Execute(self, member, args): 
+   async def Execute(self, member, channel, args): 
       if self.permissionChecker.IsAdmin(member) is False:
          return
       if len(args) >= 2:

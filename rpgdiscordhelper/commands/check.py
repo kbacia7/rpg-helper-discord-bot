@@ -8,11 +8,11 @@ class CheckCommand(baseCommand):
       self.checkPlayersTask = checkPlayersTask
       super(CheckCommand, self).__init__(discordClient, mention, permissionChecker)
 
-   async def Execute(self, member, args): 
+   async def Execute(self, member, channel, args): 
       if self.permissionChecker.IsAdmin(member) is False:
          return 
       self.checkPlayersTask.injectedArgs = args
-      self.checkPlayersTask.Start()
+      self.checkPlayersTask.Start(member.guild.id, channel)
       
 
 
