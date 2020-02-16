@@ -7,16 +7,16 @@ class PlayersCheck():
       self.settingManager = settingManager
       pass
          
-   async def Check(self, groupsToCheck, mode, modeArg):
+   async def Check(self, server_id, groupsToCheck, mode, modeArg):
       members = self.discordClient.get_all_members()
       groupsIds = [d['id'] for d in groupsToCheck]
       detectedUsersNames = []
       preLoadedMessages = []
-      settingObj = self.settingManager.LoadSettings()
+      thisGuild = discord.utils.find(lambda g: g.id == server_id, self.discordClient.guilds)
       if mode is PlayerCheckMethod.MESSAGE_ADD:
          for channelsIds in [c['channels'] for c in groupsToCheck]:
             for channelId in channelsIds:
-               channel = discord.utils.find(lambda c: c.id == int(channelId), self.discordClient.get_all_channels())
+               channel = discord.utils.find(lambda c: c.id == channelId, thisGuild.channels)
                async for m in channel.history(limit=200).filter(lambda msg: msg.created_at + datetime.timedelta(days=modeArg) > datetime.datetime.now()):
                   preLoadedMessages.append(m)
       for member in members:

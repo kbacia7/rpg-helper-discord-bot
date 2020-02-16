@@ -5,18 +5,18 @@ class GetLastMessage():
       self.discordClient = discordClient
       pass
    
-   async def FindMessageByUser(self, user, where, mode):
+   async def FindMessageByUser(self, server_id, user, where, mode):
       message = None
       channelsToSearch = []
-      thisGuild = self.discordClient.guilds[0]
+      thisGuild = discord.utils.find(lambda g: g.id == server_id, self.discordClient.guilds)
       if mode is GetLastMessageMode.CATEGORIES:
          for categoryId in where:
-            category = discord.utils.find(lambda c: str(c.id) == categoryId, thisGuild.categories)
+            category = discord.utils.find(lambda c: c.id == str(categoryId), thisGuild.categories)
             for channel in category.channels:
                channelsToSearch.append(channel)
       elif mode is GetLastMessageMode.CHANNELS:
          for channelId in where:
-            channel = discord.utils.find(lambda c: str(c.id) == channelId, self.discordClient.get_all_channels())
+            channel = discord.utils.find(lambda c: c.id == str(channelId), thisGuild.channels)
             channelsToSearch.append(channel)
 
       for channel in channelsToSearch:
