@@ -3,8 +3,8 @@ class BaseTask():
    def __init__(self, discordClient):
       self.discordClient = discordClient
    
-   def Start(self, waitSeconds):
-      asyncio.ensure_future(self.Run(waitSeconds)) 
+   def Start(self, server_id, waitSeconds, channel=None):
+      asyncio.ensure_future(self.Run(server_id, waitSeconds, channel)) 
          
-   async def Run(self, waitSeconds):
+   async def Run(self, server_id, waitSeconds, channel):
       pass

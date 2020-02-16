@@ -17,18 +17,19 @@ from rpgdiscordhelper.autotasks.checkplayerscommandtask import CheckPlayersComma
 from rpgdiscordhelper.commands.talk import TalkCommand
 from rpgdiscordhelper.commands.check import CheckCommand
 from rpgdiscordhelper.commands.stats import StatsCommand
-
 from rpgdiscordhelper.modules.path import Path
+
 if __name__ == "__main__":
    argParser = ArgParser()
    commandExecutor = CommandExecutor({})
-   settingManager = SettingManager()
+   databaseManager = DatabaseManager(None)
+   settingManager = SettingManager(databaseManager)
+   databaseManager.settingManager = settingManager
    client = ExDiscordClient(commandExecutor, argParser, settingManager)
    mention = Mention()
    playersCheck = PlayersCheck(client, settingManager)
    permissionChecker = PermissionChecker(settingManager)
    getLastMessage = GetLastMessage(client)
-   databaseManager = DatabaseManager(settingManager)
    checkPlayersTask = CheckPlayersTask(client, settingManager, playersCheck)
    statsCommandTask = StatsCommandTask(client, settingManager)
    checkPlayersCommandTask = CheckPlayersCommandTask(client, settingManager, playersCheck, getLastMessage)
@@ -41,9 +42,10 @@ if __name__ == "__main__":
       "stats": statsCommand
    }
 
-   settingObj = settingManager.LoadSettings()
-   checkPlayersTask.Start()
+   settingObj = settingManager.LoadGlobalSettings()
+   for g in client.guilds:
+      checkPlayersTask.Start(g.id)
    commandExecutor.commands = commandsToInject
    client.commandExecutor = commandExecutor
    databaseManager.connect()
-   client.run(settingObj['discordToken'])
+   client.run(settingObj['discord_token'])
