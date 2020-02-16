@@ -8,7 +8,7 @@ class DatabaseManager():
         self.engine = None
 
     def connect(self):
-        settingObj = self.settingManager.LoadSettings()
+        settingObj = self.settingManager.LoadGlobalSettings()
         self.engine = create_engine(settingObj['database_url'])
         self.sessionMaker = sessionmaker(bind=self.engine)
 
