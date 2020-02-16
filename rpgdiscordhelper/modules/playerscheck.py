@@ -1,6 +1,6 @@
 import discord
 import datetime
-from playercheckmethod import PlayerCheckMethod
+from rpgdiscordhelper.modules.playercheckmethod import PlayerCheckMethod
 class PlayersCheck():
    def __init__(self, discordClient, settingManager):
       self.discordClient = discordClient

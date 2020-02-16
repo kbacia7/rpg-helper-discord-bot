@@ -1,8 +1,8 @@
-from commands.base import BaseCommand as baseCommand
+from .base import BaseCommand as baseCommand
 import discord
 import datetime
-from playercheckmethod import PlayerCheckMethod
-from getlastmessagemode import GetLastMessageMode
+from rpgdiscordhelper.modules.playercheckmethod import PlayerCheckMethod
+from rpgdiscordhelper.modules.getlastmessagemode import GetLastMessageMode
 class StatsCommand(baseCommand):
    def __init__(self, discordClient, mention, permissionChecker, statsTask):
       self.statsTask = statsTask

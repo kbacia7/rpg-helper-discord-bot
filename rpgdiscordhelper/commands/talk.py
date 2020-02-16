@@ -1,4 +1,4 @@
-from commands.base import BaseCommand as baseCommand
+from .base import BaseCommand as baseCommand
 import pytimeparse
 import discord
 import asyncio

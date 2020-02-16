@@ -1,6 +1,6 @@
 import os
 import yaml
-from path import Path
+from rpgdiscordhelper.modules.path import Path
 class SettingManager():
    def __init__(self):
       self.settings = None

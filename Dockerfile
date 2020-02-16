@@ -1,5 +1,5 @@
 FROM python:3
 WORKDIR /usr/src/app
-RUN pip install PyYAML discord.py pytimeparse --no-cache-dir
+RUN pip install .
 COPY . .
-CMD ["python", "./main.py"]
+CMD ["python", "-m ", "rpgdiscordhelper.main "]

@@ -1,7 +1,7 @@
 import discord
-from playercheckmethod import PlayerCheckMethod
-from autotasks.base import BaseTask
-from getlastmessagemode import GetLastMessageMode
+from rpgdiscordhelper.modules.playercheckmethod import PlayerCheckMethod
+from rpgdiscordhelper.autotasks.base import BaseTask
+from rpgdiscordhelper.modules.getlastmessagemode import GetLastMessageMode
 import datetime
 
 class CheckPlayersCommandTask(BaseTask):

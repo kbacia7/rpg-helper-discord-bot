@@ -2,22 +2,22 @@ import string
 import random
 import sched
 import time
-from client import ExDiscordClient
-from commandexecutor import CommandExecutor
-from argparser import ArgParser
-from mention import Mention
-from playerscheck import PlayersCheck
-from permission import PermissionChecker
-from settingmanager import SettingManager
-from getlastmessage import GetLastMessage
-from autotasks.statscommandtask import StatsCommandTask
-from autotasks.checkplayerstask import CheckPlayersTask
-from autotasks.checkplayerscommandtask import CheckPlayersCommandTask
-from commands.talk import TalkCommand
-from commands.check import CheckCommand
-from commands.stats import StatsCommand
+from rpgdiscordhelper.modules.client import ExDiscordClient
+from rpgdiscordhelper.modules.commandexecutor import CommandExecutor
+from rpgdiscordhelper.modules.argparser import ArgParser
+from rpgdiscordhelper.modules.mention import Mention
+from rpgdiscordhelper.modules.playerscheck import PlayersCheck
+from rpgdiscordhelper.modules.permission import PermissionChecker
+from rpgdiscordhelper.modules.settingmanager import SettingManager
+from rpgdiscordhelper.modules.getlastmessage import GetLastMessage
+from rpgdiscordhelper.autotasks.statscommandtask import StatsCommandTask
+from rpgdiscordhelper.autotasks.checkplayerstask import CheckPlayersTask
+from rpgdiscordhelper.autotasks.checkplayerscommandtask import CheckPlayersCommandTask
+from rpgdiscordhelper.commands.talk import TalkCommand
+from rpgdiscordhelper.commands.check import CheckCommand
+from rpgdiscordhelper.commands.stats import StatsCommand
 
-from path import Path
+from rpgdiscordhelper.modules.path import Path
 if __name__ == "__main__":
    argParser = ArgParser()
    commandExecutor = CommandExecutor({})

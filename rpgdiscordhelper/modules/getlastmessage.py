@@ -1,5 +1,5 @@
 import discord
-from getlastmessagemode import GetLastMessageMode
+from rpgdiscordhelper.modules.getlastmessagemode import GetLastMessageMode
 class GetLastMessage():
    def __init__(self, discordClient):
       self.discordClient = discordClient
