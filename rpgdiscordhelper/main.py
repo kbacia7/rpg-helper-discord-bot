@@ -4,6 +4,7 @@ import sched
 import time
 from rpgdiscordhelper.modules.client import ExDiscordClient
 from rpgdiscordhelper.modules.commandexecutor import CommandExecutor
+from rpgdiscordhelper.modules.databasemanager import DatabaseManager
 from rpgdiscordhelper.modules.argparser import ArgParser
 from rpgdiscordhelper.modules.mention import Mention
 from rpgdiscordhelper.modules.playerscheck import PlayersCheck
@@ -27,6 +28,7 @@ if __name__ == "__main__":
    playersCheck = PlayersCheck(client, settingManager)
    permissionChecker = PermissionChecker(settingManager)
    getLastMessage = GetLastMessage(client)
+   databaseManager = DatabaseManager(settingManager)
    checkPlayersTask = CheckPlayersTask(client, settingManager, playersCheck)
    statsCommandTask = StatsCommandTask(client, settingManager)
    checkPlayersCommandTask = CheckPlayersCommandTask(client, settingManager, playersCheck, getLastMessage)
@@ -43,4 +45,5 @@ if __name__ == "__main__":
    checkPlayersTask.Start()
    commandExecutor.commands = commandsToInject
    client.commandExecutor = commandExecutor
+   databaseManager.connect()
    client.run(settingObj['discordToken'])
