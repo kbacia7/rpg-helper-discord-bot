@@ -3,4 +3,4 @@ WORKDIR /usr/src/app
 COPY . .
 RUN pip install .
 CMD ["alembic", "upgrade", "head"]
-CMD ["python", "-m ", "rpgdiscordhelper.main "]
+CMD ["python", "-m", "rpgdiscordhelper.main"]
