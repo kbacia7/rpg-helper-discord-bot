@@ -1,2 +1,2 @@
-database_url: mysql+pymysql://discord-bot-user:discord-bot-pwd@database/discord-bot-db #sqlalchemy URL to database
+database_url: mysql+pymysql://discord-bot-user:discord-bot-pwd@database/discord-bot-db?charset=utf8 #sqlalchemy URL to database
 discord_token: '' #your Discord bot token
