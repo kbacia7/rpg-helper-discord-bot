@@ -1,18 +1,18 @@
-from .base import BaseCommand as baseCommand
+from .base import BaseCommand
 import discord
 import datetime
 from rpgdiscordhelper.modules.playercheckmethod import PlayerCheckMethod
 from rpgdiscordhelper.modules.getlastmessagemode import GetLastMessageMode
-class StatsCommand(baseCommand):
-   def __init__(self, discordClient, mention, permissionChecker, statsTask):
-      self.statsTask = statsTask
-      super(StatsCommand, self).__init__(discordClient, mention, permissionChecker)
+class StatsCommand(BaseCommand):
+   def __init__(self, discord_client, mention, permission_checker, stats_task):
+      self.stats_task = stats_task
+      super(StatsCommand, self).__init__(discord_client, mention, permission_checker)
 
-   async def Execute(self, member, channel, args): 
-      if self.permissionChecker.IsAdmin(member) is False:
+   async def execute(self, member, channel, args): 
+      if self.permission_checker.is_admin(member) is False:
          return 
-      self.statsTask.injectedArgs = args
-      self.statsTask.Start(member.guild.id, channel)
+      self.stats_task.args = args
+      self.stats_task.start(member.guild.id, channel)
       
 
 

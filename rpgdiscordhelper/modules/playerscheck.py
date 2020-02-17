@@ -2,37 +2,37 @@ import discord
 import datetime
 from rpgdiscordhelper.modules.playercheckmethod import PlayerCheckMethod
 class PlayersCheck():
-   def __init__(self, discordClient, settingManager):
-      self.discordClient = discordClient
-      self.settingManager = settingManager
+   def __init__(self, discord_client, setting_manager):
+      self.discord_client = discord_client
+      self.setting_manager = setting_manager
       pass
          
-   async def Check(self, server_id, groupsToCheck, mode, modeArg):
-      members = self.discordClient.get_all_members()
-      groupsIds = [d['id'] for d in groupsToCheck]
-      detectedUsersNames = []
-      preLoadedMessages = []
-      thisGuild = discord.utils.find(lambda g: g.id == server_id, self.discordClient.guilds)
+   async def check(self, server_id, dict_data, mode, arg_for_mode):
+      members = self.discord_client.get_all_members()
+      roles_ids_to_check = [d['id'] for d in dict_data]
+      founded_user_names = []
+      loaded_messages = []
+      guild = discord.utils.find(lambda g: g.id == server_id, self.discord_client.guilds)
       if mode is PlayerCheckMethod.MESSAGE_ADD:
-         for channelsIds in [c['channels'] for c in groupsToCheck]:
-            for channelId in channelsIds:
-               channel = discord.utils.find(lambda c: c.id == channelId, thisGuild.channels)
-               async for m in channel.history(limit=200).filter(lambda msg: msg.created_at + datetime.timedelta(days=modeArg) > datetime.datetime.now()):
-                  preLoadedMessages.append(m)
+         for channels_ids_to_check in [d['channels'] for d in dict_data]:
+            for channel_id in channels_ids_to_check:
+               channel = discord.utils.find(lambda c: c.id == channel_id, guild.channels)
+               async for m in channel.history(limit=200).filter(lambda msg: msg.created_at + datetime.timedelta(days=arg_for_mode) > datetime.datetime.now()):
+                  loaded_messages.append(m)
       for member in members:
          for role in member.roles:
-            roleId = str(role.id)
-            if roleId in groupsIds:
+            role_id = str(role.id)
+            if role_id in roles_ids_to_check:
                if mode is PlayerCheckMethod.JOIN_DATE:
-                  if datetime.datetime.now() > member.joined_at + datetime.timedelta(days=modeArg):
-                     detectedUsersNames.append(member)
+                  if datetime.datetime.now() > member.joined_at + datetime.timedelta(days=arg_for_mode):
+                     founded_user_names.append(member)
                elif mode is PlayerCheckMethod.MESSAGE_ADD:
-                  checkFromDate = member.joined_at
-                  if datetime.datetime.now() > checkFromDate + datetime.timedelta(days=modeArg): 
-                     message = discord.utils.find(lambda m: m.author == member, preLoadedMessages)
+                  user_join_date = member.joined_at
+                  if datetime.datetime.now() > user_join_date + datetime.timedelta(days=arg_for_mode): 
+                     message = discord.utils.find(lambda m: m.author == member, loaded_messages)
                      if message is None:
-                        detectedUsersNames.append(member)
-      return detectedUsersNames
+                        founded_user_names.append(member)
+      return founded_user_names
 
 
 

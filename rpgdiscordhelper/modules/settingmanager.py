@@ -25,26 +25,26 @@ class SettingManager():
       }
       pass
    
-   def UpdateGlobalSettings(self, obj): 
-      with open(Path.SETTINGS.value, 'w', encoding='utf-8') as settingFile:
-         yaml.dump(obj, settingFile, allow_unicode=True)
+   def update_global_settings(self, data): 
+      with open(Path.SETTINGS.value, 'w', encoding='utf-8') as yaml_setting_file:
+         yaml.dump(data, yaml_setting_file, allow_unicode=True)
 
-   def CreateGlobalSettings(self):
-      defaultSettingDict = {
+   def create_global_settings(self):
+      default_yaml_settings = {
          SettingName.DISCORD_TOKEN.value: '', 
          SettingName.DATABASE_URL.value: '',
       }
-      self.UpdateGlobalSettings(defaultSettingDict)
+      self.update_global_settings(default_yaml_settings)
       
-   def LoadGlobalSettings(self):
+   def load_global_settings(self):
       if os.path.exists(Path.SETTINGS.value):
-         with open(Path.SETTINGS.value, 'r') as settingFile:
-            return yaml.load(settingFile, Loader=yaml.FullLoader)
+         with open(Path.SETTINGS.value, 'r') as yaml_setting_file:
+            return yaml.load(yaml_setting_file, Loader=yaml.FullLoader)
       else:
-         self.CreateGlobalSettings()
-         self.LoadGlobalSettings()
+         self.create_global_settings()
+         self.load_global_settings()
 
-   def ReloadSettings(self, server_id):
+   def reload_settings(self, server_id):
       self.settings[server_id] = {}
       session = self.database_manager.create_session()
       settings = session.query(ServerSetting).filter(ServerSetting.name.in_(self.settings_names), ServerSetting.server_id == server_id).all()
@@ -55,11 +55,11 @@ class SettingManager():
             else:
                self.settings[server_id][setting.name] = [setting.value]
 
-   def LoadSettings(self, server_id):
+   def load_settings(self, server_id):
       if server_id in self.settings:
          return self.settings[server_id]
       else:
-         self.ReloadSettings(server_id)
-         return self.LoadSettings(server_id)
+         self.reload_settings(server_id)
+         return self.load_settings(server_id)
      
       

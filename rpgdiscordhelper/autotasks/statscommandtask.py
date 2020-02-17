@@ -6,48 +6,46 @@ from rpgdiscordhelper.modules.settingname import SettingName
 import datetime
 
 class StatsCommandTask(BaseTask):
-   def __init__(self, discordClient, settingManager):
-      self.settingManager = settingManager
-      self.injectedArgs = []
-      super(StatsCommandTask, self).__init__(discordClient)
+   def __init__(self, discord_client, setting_manager):
+      self.setting_manager = setting_manager
+      self.args = []
+      super(StatsCommandTask, self).__init__(discord_client)
 
-   def Start(self, server_id, channel):
-      super(StatsCommandTask, self).Start(server_id, 0, channel)
+   def start(self, server_id, channel):
+      super(StatsCommandTask, self).start(server_id, 0, channel)
    
-   async def Run(self, server_id, time, channel):
-      fullMode = False
-      if len(self.injectedArgs) > 0:
-         if self.injectedArgs[0] == "full":
-            fullMode = True
+   async def run(self, server_id, time, channel):
+      details_mode = False
+      if len(self.args) > 0:
+         if self.args[0] == "details":
+            details_mode = True
       
-      thisGuild = channel.guild
-      settingObj = self.settingManager.LoadSettings(server_id)
-      channelToSend = channel
-      groupedByChannels = {}
+      guild = channel.guild
+      settings = self.setting_manager.load_settings(server_id)
+      msg_count_by_channels_ids = {}
       count = 0
-      fromDate = (datetime.datetime.now() - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
-      toData =  datetime.datetime.now().strftime("%Y-%m-%d")
-      getIdsFromChannelsInCategories = settingObj[SettingName.CATEGORY_FOR_STATS.value]
-      channelsToCheck = []
-      thisGuild = self.discordClient.guilds[0]
-      for categoryId in getIdsFromChannelsInCategories:
-         category = discord.utils.find(lambda c: str(c.id) == categoryId, thisGuild.categories)
-         for channel in category.channels:
-            if str(channel.id) not in settingObj[SettingName.IGNORED_CHANNELS_FOR_STATS.value]:
-               channelsToCheck.append(str(channel.id))
-      for channelId in channelsToCheck:
-         channel = discord.utils.find(lambda c: c.id == int(channelId), thisGuild.channels)
-         async for m in channel.history(limit=5000).filter(lambda msg: msg.created_at + datetime.timedelta(days=7) >= datetime.datetime.now()):
+      from_date = (datetime.datetime.now() - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
+      to_date =  datetime.datetime.now().strftime("%Y-%m-%d")
+      categories_to_read = settings[SettingName.CATEGORY_FOR_STATS.value]
+      channels_to_read = []
+      guild = self.discord_client.guilds[0]
+      for category_id in categories_to_read:
+         category = discord.utils.find(lambda c: str(c.id) == category_id, guild.categories)
+         for readed_channel in category.channels:
+            if str(readed_channel.id) not in settings[SettingName.IGNORED_CHANNELS_FOR_STATS.value]:
+               channels_to_read.append(str(readed_channel.id))
+      for channel_id in channels_to_read:
+         readed_channel = discord.utils.find(lambda c: c.id == int(channel_id), guild.channels)
+         async for m in readed_channel.history(limit=5000).filter(lambda msg: msg.created_at + datetime.timedelta(days=7) >= datetime.datetime.now()):
             count += 1
-            if fullMode is True:
-               channelGroupKey = str(m.channel.id)
-               if channelGroupKey not in groupedByChannels:
-                  groupedByChannels[channelGroupKey] = 0
-               groupedByChannels[channelGroupKey] += 1
-      await channelToSend.send("{0} messages at {1} to {2}".format(count, fromDate, toData))
-      if fullMode is True:
-         finalMsg = ""
-         groupedByChannelsSorted = [(k, groupedByChannels[k]) for k in sorted(groupedByChannels, key=groupedByChannels.get, reverse=True)]
-         for channelId, messagesCount in groupedByChannelsSorted:
-            finalMsg = "{0}- <#{1}> {2} messages\n".format(finalMsg, channelId, messagesCount)
-         await channelToSend.send(finalMsg)
+            if details_mode is True:
+               if channel_id not in msg_count_by_channels_ids:
+                  msg_count_by_channels_ids[channel_id] = 0
+               msg_count_by_channels_ids[channel_id] += 1
+      await channel.send("{0} messages at {1} to {2}".format(count, from_date, to_date))
+      if details_mode is True:
+         message = ""
+         sorted_by_messages_count = [(k, msg_count_by_channels_ids[k]) for k in sorted(msg_count_by_channels_ids, key=msg_count_by_channels_ids.get, reverse=True)]
+         for channel_id, messages_count in sorted_by_messages_count:
+            message = "{0}- <#{1}> {2} messages\n".format(message, channel_id, messages_count)
+         await channel.send(message)

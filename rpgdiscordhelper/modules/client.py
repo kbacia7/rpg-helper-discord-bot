@@ -3,10 +3,10 @@ import datetime
 from rpgdiscordhelper.modules.settingname import SettingName
 
 class DiscordClientBase(discord.Client):
-    def __init__(self, commandExecutor, argparser, settingManager):
-        self.commandExecutor = commandExecutor
-        self.argparser = argparser
-        self.settingManager = settingManager
+    def __init__(self, command_executor, arg_parser, setting_manager):
+        self.command_executor = command_executor
+        self.arg_parser = arg_parser
+        self.setting_manager = setting_manager
         super().__init__()
 
 class ExDiscordClient(DiscordClientBase):
@@ -15,16 +15,16 @@ class ExDiscordClient(DiscordClientBase):
 
     async def on_message(self, message):
         if message is not None and message.guild is not None:
-           settingObj = self.settingManager.LoadSettings(message.guild.id)
+           settings = self.setting_manager.load_settings(message.guild.id)
            if len(message.content) <= 0 or message.author == self.user:
               return
-           if message.channel.category.id in settingObj[SettingName.CATEGORY_FOR_LOOKING_PLAYERS.value] and str(message.author.id) in settingObj['checkedInactiveUsers']:
-              del settingObj['checkedInactiveUsers'][str(message.author.id)]
-              settingObj.UpdateSettings(settingObj)
+           if message.channel.category.id in settings[SettingName.CATEGORY_FOR_LOOKING_PLAYERS.value] and str(message.author.id) in settings['checkedInactiveUsers']:
+              del settings['checkedInactiveUsers'][str(message.author.id)]
+              settings.update_settings(settings)
 
            if message.content[0] == '/':
-              data = self.argparser.Parse(message.content)
-              await self.commandExecutor.Execute(data[0], message.author, message.channel, data[1:])
+              data = self.arg_parser.parse(message.content)
+              await self.command_executor.execute(data[0], message.author, message.channel, data[1:])
 
     """async def on_member_update(self, before, after):
         beforeRolesIds = [str(r.id) for r in before.roles]

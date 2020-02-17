@@ -10,7 +10,7 @@ from rpgdiscordhelper.modules.mention import Mention
 from rpgdiscordhelper.modules.playerscheck import PlayersCheck
 from rpgdiscordhelper.modules.permission import PermissionChecker
 from rpgdiscordhelper.modules.settingmanager import SettingManager
-from rpgdiscordhelper.modules.getlastmessage import GetLastMessage
+from rpgdiscordhelper.modules.lastmessages import LastMessages
 from rpgdiscordhelper.autotasks.statscommandtask import StatsCommandTask
 from rpgdiscordhelper.autotasks.checkplayerstask import CheckPlayersTask
 from rpgdiscordhelper.autotasks.checkplayerscommandtask import CheckPlayersCommandTask
@@ -20,32 +20,32 @@ from rpgdiscordhelper.commands.stats import StatsCommand
 from rpgdiscordhelper.modules.path import Path
 
 if __name__ == "__main__":
-   argParser = ArgParser()
-   commandExecutor = CommandExecutor({})
-   databaseManager = DatabaseManager(None)
-   settingManager = SettingManager(databaseManager)
-   databaseManager.settingManager = settingManager
-   client = ExDiscordClient(commandExecutor, argParser, settingManager)
+   args_parser = ArgParser()
+   command_executor = CommandExecutor({})
+   database_manager = DatabaseManager(None)
+   setting_manager = SettingManager(database_manager)
+   database_manager.setting_manager = setting_manager
+   client = ExDiscordClient(command_executor, args_parser, setting_manager)
    mention = Mention()
-   playersCheck = PlayersCheck(client, settingManager)
-   permissionChecker = PermissionChecker(settingManager)
-   getLastMessage = GetLastMessage(client)
-   checkPlayersTask = CheckPlayersTask(client, settingManager, playersCheck)
-   statsCommandTask = StatsCommandTask(client, settingManager)
-   checkPlayersCommandTask = CheckPlayersCommandTask(client, settingManager, playersCheck, getLastMessage)
-   talkCommand = TalkCommand(client, mention, permissionChecker)
-   checkCommand = CheckCommand(client, mention, permissionChecker, checkPlayersCommandTask)
-   statsCommand = StatsCommand(client, mention, permissionChecker, statsCommandTask)
-   commandsToInject = {
-      "talk": talkCommand,
-      "check": checkCommand,
-      "stats": statsCommand
+   players_check = PlayersCheck(client, setting_manager)
+   permission_checker = PermissionChecker(setting_manager)
+   last_messages = LastMessages(client)
+   check_players_task = CheckPlayersTask(client, setting_manager, players_check)
+   stats_command_task = StatsCommandTask(client, setting_manager)
+   check_players_command_task = CheckPlayersCommandTask(client, setting_manager, players_check, last_messages)
+   talk_command = TalkCommand(client, mention, permission_checker)
+   check_command = CheckCommand(client, mention, permission_checker, check_players_command_task)
+   stats_command = StatsCommand(client, mention, permission_checker, stats_command_task)
+   commands = {
+      "talk": talk_command,
+      "check": check_command,
+      "stats": stats_command
    }
 
-   settingObj = settingManager.LoadGlobalSettings()
+   global_settings = setting_manager.load_global_settings()
    for g in client.guilds:
-      checkPlayersTask.Start(g.id)
-   commandExecutor.commands = commandsToInject
-   client.commandExecutor = commandExecutor
-   databaseManager.connect()
-   client.run(settingObj['discord_token'])
+      check_players_task.start(g.id)
+   command_executor.commands = commands
+   client.command_executor = command_executor
+   database_manager.connect()
+   client.run(global_settings['discord_token'])

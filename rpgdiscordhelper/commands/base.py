@@ -1,9 +1,9 @@
 class BaseCommand():
-   def __init__(self, discordClient, mention, permissionChecker):
-      self.discordClient = discordClient
+   def __init__(self, discord_client, mention, permission_checker):
+      self.discord_client = discord_client
       self.mention = mention
-      self.permissionChecker = permissionChecker
+      self.permission_checker = permission_checker
 
-   async def Execute(self, member, channel, args):
+   async def execute(self, member, channel, args):
       pass
       
