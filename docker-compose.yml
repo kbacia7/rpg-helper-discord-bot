@@ -1,0 +1,20 @@
+version: '3'
+services:
+  server:
+    build: .
+    depends_on:
+    - database
+  database:
+    image: mariadb:latest
+    volumes: 
+      - dbData:/var/lib/mysql
+    restart: always
+    ports: 
+    - "0:3306"
+    environment:
+       MYSQL_ROOT_PASSWORD: rootpassword
+       MYSQL_DATABASE: discord-bot-db
+       MYSQL_USER: discord-bot-user
+       MYSQL_PASSWORD: discord-bot-pwd
+volumes:
+  dbData: {}

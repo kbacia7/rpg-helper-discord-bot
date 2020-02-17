@@ -1,5 +1,6 @@
 FROM python:3
 WORKDIR /usr/src/app
-RUN pip install .
 COPY . .
+RUN pip install .
+CMD ["alembic", "upgrade", "head"]
 CMD ["python", "-m ", "rpgdiscordhelper.main "]
