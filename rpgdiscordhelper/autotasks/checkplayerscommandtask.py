@@ -38,7 +38,7 @@ class CheckPlayersCommandTask(BaseTask):
             last_message = None
             if details_mode:
                 last_message = await self.last_messages.find_message_by_user(
-                    user, settings[SettingName.OFFTOPIC_CATEGORY.value],
+                    guild.id, user, settings[SettingName.OFFTOPIC_CATEGORY.value],
                     GetLastMessageMode.CATEGORIES)
             if last_message is not None:
                 message = message + (
@@ -63,13 +63,15 @@ class CheckPlayersCommandTask(BaseTask):
             {'id': settings[SettingName.PLAYER_WITH_CHARACTER_ROLE_ID.value],
                 'channels': channels_to_read}
         ], PlayerCheckMethod.MESSAGE_ADD, 7)
-        message = message + """
-        Players with created character but without any game (from 7 days):"""
+        message = message + (
+            "Players with created character "
+            "but without any game (from 7 days):"
+        )
         for user in inactive_users:
             last_message = None
             if details_mode:
                 last_message = await self.last_messages.find_message_by_user(
-                    user, settings[SettingName.OFFTOPIC_CATEGORY.value],
+                    guild.id user, settings[SettingName.OFFTOPIC_CATEGORY.value],
                     GetLastMessageMode.CATEGORIES)
             if last_message is not None:
                 message = message + """
