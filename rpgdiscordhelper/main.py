@@ -27,7 +27,8 @@ if __name__ == "__main__":
     setting_manager = SettingManager(database_manager)
     database_manager.setting_manager = setting_manager
     client = ExDiscordClient(
-        command_executor, args_parser, setting_manager, database_manager)
+        command_executor, args_parser, setting_manager,
+        database_manager, None)
     mention = Mention()
     players_check = PlayersCheck(client, setting_manager)
     permission_checker = PermissionChecker(setting_manager)
@@ -48,9 +49,8 @@ if __name__ == "__main__":
         "stats": stats_command
     }
 
+    client.check_players_task = check_players_task
     global_settings = setting_manager.load_global_settings()
-    for g in client.guilds:
-        check_players_task.start(g.id)
     command_executor.commands = commands
     client.command_executor = command_executor
     database_manager.connect()

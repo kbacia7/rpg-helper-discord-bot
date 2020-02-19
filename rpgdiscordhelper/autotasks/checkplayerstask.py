@@ -23,11 +23,13 @@ class CheckPlayersTask(BaseTask):
     async def run(self, server_id, time, channel):
         while True:
             await asyncio.sleep(time)
-            setting = self.setting_manager.load_settings(server_id)
+            settings = self.setting_manager.load_settings(server_id)
             guild = discord.utils.find(lambda g: g.id == int(
-                server_id), self.discord_client.guilds)
-            channel_logs = discord.utils.find(lambda c: c.id == int(
-                setting[SettingName.LOGS_CHANNEL_ID.value]), guild.channels)
+                server_id
+            ), self.discord_client.guilds)
+            channel_logs = discord.utils.find(lambda c: str(c.id) in (
+                settings[SettingName.LOGS_CHANNEL_ID.value]
+            ), guild.channels)
 
             users_without_character = await self.players_check.check(
                 server_id, [
@@ -39,7 +41,7 @@ class CheckPlayersTask(BaseTask):
                             settings[SettingName.CHARACTERS_CHANNEL_ID.value]
                     }
                 ], PlayerCheckMethod.JOIN_DATE, 2)
-            categories_to_read = setting[
+            categories_to_read = settings[
                 SettingName.CATEGORY_FOR_LOOKING_PLAYERS.value
             ]
             channels_to_read = []
@@ -56,10 +58,12 @@ class CheckPlayersTask(BaseTask):
                     ],
                     'channels': channels_to_read}
                 ], PlayerCheckMethod.MESSAGE_ADD, 7)
-            message_for_players_without_character = setting[
-                SettingName.MESSAGE_FOR_PLAYERS_WITHOUT_CHARACTER.value]
-            message_for_inactive_users = setting[
-                SettingName.MESSAGE_FOR_INACTIVE_PLAYERS.value]
+            message_for_players_without_character = settings[
+                SettingName.MESSAGE_FOR_PLAYERS_WITHOUT_CHARACTER.value
+            ][0]
+            message_for_inactive_users = settings[
+                SettingName.MESSAGE_FOR_INACTIVE_PLAYERS.value
+            ][0]
             if len(users_without_character) > 0:
                 users_without_character_ids = [
                     str(u.id) for u in users_without_character]
@@ -88,7 +92,7 @@ class CheckPlayersTask(BaseTask):
                         ]
                         if user.sended_date + (
                             datetime.timedelta(days=2)
-                        ) > now_date:
+                        ) < now_date:
                             user.sended_date = now_date
                         else:
                             notification_to_send = False
@@ -124,7 +128,7 @@ class CheckPlayersTask(BaseTask):
                         user = inactive_users_with_notification[user.id]
                         if user.sended_date + (
                             datetime.timedelta(days=5)
-                        ) > now_date:
+                        ) < now_date:
                             user.sended_date = now_date
                         else:
                             notification_to_send = False

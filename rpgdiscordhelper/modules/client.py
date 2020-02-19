@@ -8,17 +8,21 @@ from rpgdiscordhelper.models.UserWithoutCharacter import UserWithoutCharacter
 class DiscordClientBase(discord.Client):
     def __init__(
             self, command_executor,
-            arg_parser, setting_manager, database_manager):
+            arg_parser, setting_manager, database_manager,
+            check_players_task):
         self.command_executor = command_executor
         self.arg_parser = arg_parser
         self.setting_manager = setting_manager
         self.database_manager = database_manager
+        self.check_players_task = check_players_task
         super().__init__()
 
 
 class ExDiscordClient(DiscordClientBase):
     async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
+        for g in self.guilds:
+            self.check_players_task.start(g.id)
 
     async def on_message(self, message):
         if message is not None and message.guild is not None:
@@ -44,7 +48,7 @@ class ExDiscordClient(DiscordClientBase):
         after_update_roles_ids = [str(r.id) for r in after.roles]
         settings = self.setting_manager.load_settings(after.guild.id)
         player_with_character_role_id = settings[
-            SettingName.PLAYER_WITH_CHARACTER_ROLE_ID.value]
+            SettingName.PLAYER_WITH_CHARACTER_ROLE_ID.value][0]
         if player_with_character_role_id not in (
                 before_update_roles_ids) and (
                 player_with_character_role_id in after_update_roles_ids):
