@@ -38,7 +38,8 @@ class CheckPlayersCommandTask(BaseTask):
             last_message = None
             if details_mode:
                 last_message = await self.last_messages.find_message_by_user(
-                    guild.id, user, settings[SettingName.OFFTOPIC_CATEGORY.value],
+                    guild.id, user,
+                    settings[SettingName.OFFTOPIC_CATEGORY.value],
                     GetLastMessageMode.CATEGORIES)
             if last_message is not None:
                 message = message + (
@@ -71,7 +72,8 @@ class CheckPlayersCommandTask(BaseTask):
             last_message = None
             if details_mode:
                 last_message = await self.last_messages.find_message_by_user(
-                    guild.id user, settings[SettingName.OFFTOPIC_CATEGORY.value],
+                    guild.id, user,
+                    settings[SettingName.OFFTOPIC_CATEGORY.value],
                     GetLastMessageMode.CATEGORIES)
             if last_message is not None:
                 message = message + """
