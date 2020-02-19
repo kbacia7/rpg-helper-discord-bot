@@ -1,7 +1,7 @@
 class ArgParser():
     def __init__(self):
-       pass
+        pass
 
     def parse(self, string):
-       string = string[1:]
-       return string.split(" ")
+        string = string[1:]
+        return string.split(" ")

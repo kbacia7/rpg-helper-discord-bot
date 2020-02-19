@@ -1,4 +1,6 @@
 from enum import Enum
+
+
 class SettingName(Enum):
     DISCORD_TOKEN = 'discord_token'
     DATABASE_URL = 'database_url'
@@ -8,7 +10,8 @@ class SettingName(Enum):
     LOGS_CHANNEL_ID = 'logs_channel_id'
     CHARACTERS_CHANNEL_ID = 'characters_channel_id'
     MESSAGE_FOR_INACTIVE_PLAYERS = 'message_for_inactive'
-    MESSAGE_FOR_PLAYERS_WITHOUT_CHARACTER = 'message_for_players_without_character'
+    MESSAGE_FOR_PLAYERS_WITHOUT_CHARACTER = (
+        'message_for_players_without_character')
     CATEGORY_FOR_STATS = 'stat_category_id'
     CATEGORY_FOR_LOOKING_PLAYERS = 'search_messages_category_id'
     OFFTOPIC_CATEGORY = 'offtopic_category_id'

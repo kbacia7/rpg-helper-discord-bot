@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+
 class DatabaseManager():
     def __init__(self, setting_manager):
         self.setting_manager = setting_manager

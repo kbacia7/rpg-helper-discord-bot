@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from rpgdiscordhelper.models.Base import Base
+
+
 class InactiveUser(Base):
     __tablename__ = 'inactive_users'
     id = Column(Integer, primary_key=True)
