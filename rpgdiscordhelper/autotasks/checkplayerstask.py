@@ -83,10 +83,13 @@ class CheckPlayersTask(BaseTask):
                     if user.id in (
                         users_without_character_with_notification
                     ):
-                        if users_without_character_with_notification[user.id]
-                        .sended_date + datetime.timedelta(days=2) > now_date:
-                            users_without_character_with_notification[user.id]
-                            .sended_date = now_date
+                        user = users_without_character_with_notification[
+                            user.id
+                        ]
+                        if user.sended_date + (
+                            datetime.timedelta(days=2)
+                        ) > now_date:
+                            user.sended_date = now_date
                         else:
                             notification_to_send = False
                     else:
@@ -118,10 +121,11 @@ class CheckPlayersTask(BaseTask):
                     notification_to_send = True
                     now_date = datetime.datetime.now()
                     if user.id in inactive_users_with_notification:
-                        if inactive_users_with_notification[user.id]
-                        .sended_date + datetime.timedelta(days=5) > now_date:
-                            inactive_users_with_notification[user.id]
-                            .sended_date = now_date
+                        user = inactive_users_with_notification[user.id]
+                        if user.sended_date + (
+                            datetime.timedelta(days=5)
+                        ) > now_date:
+                            user.sended_date = now_date
                         else:
                             notification_to_send = False
                     else:
