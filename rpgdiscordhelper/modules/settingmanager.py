@@ -51,7 +51,7 @@ class SettingManager():
       for setting in settings:
          if setting.name in self.settings_names:
             if setting.name in self.settings[server_id]:
-               self.settings[server_id][setting.name].push(setting.value)
+               self.settings[server_id][setting.name].append(setting.value)
             else:
                self.settings[server_id][setting.name] = [setting.value]
 
