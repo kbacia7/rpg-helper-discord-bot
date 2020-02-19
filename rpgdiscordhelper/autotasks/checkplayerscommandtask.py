@@ -9,10 +9,10 @@ import datetime
 class CheckPlayersCommandTask(BaseTask):
     def __init__(
             self, discord_client, setting_manager,
-            players_check, last_messages):
+            players_check, last_msgs):
         self.setting_manager = setting_manager
         self.players_check = players_check
-        self.last_messages = last_messages
+        self.last_msgs = last_msgs
         self.args = []
         super(CheckPlayersCommandTask, self).__init__(discord_client)
 
@@ -33,24 +33,29 @@ class CheckPlayersCommandTask(BaseTask):
                 'channels': settings[SettingName.CHARACTERS_CHANNEL_ID.value]
             }
         ], PlayerCheckMethod.JOIN_DATE, 2)
-        message = "Players without characters (from 2 days):\n"
-        for user in users_without_character:
-            last_message = None
-            if details_mode:
-                last_message = await self.last_messages.find_message_by_user(
-                    guild.id, user,
-                    settings[SettingName.OFFTOPIC_CATEGORY.value],
-                    GetLastMessageMode.CATEGORIES)
-            if last_message is not None:
-                message = message + (
-                    "\n- <@{0}> (last message {1} days ago on <#{2}>)".format(
-                        user.id,
+        message = ""
+        if len(users_without_character) > 0:
+            message = "Players without characters (from 2 days):"
+            for user in users_without_character:
+                last_msg = None
+                if details_mode:
+                    last_msg = await self.last_msgs.find_message_by_user(
+                        guild.id, user,
+                        settings[SettingName.OFFTOPIC_CATEGORY.value],
+                        GetLastMessageMode.CATEGORIES)
+                if last_msg is not None:
+                    message = message + (
                         (
-                            datetime.datetime.now() - last_message.created_at
-                        ).days,
-                        last_message.channel.id))
-            else:
-                message = message + "\n- <@{0}>".format(user.id)
+                            "\n- <@{0}> "
+                            "(last message {1} days ago on <#{2}>)"
+                        ).format(
+                            user.id,
+                            (
+                                datetime.datetime.now() - last_msg.created_at
+                            ).days,
+                            last_msg.channel.id))
+                else:
+                    message = message + "\n- <@{0}>".format(user.id)
         categories_to_read = settings[
             SettingName.CATEGORY_FOR_LOOKING_PLAYERS.value]
         channels_to_read = []
@@ -64,23 +69,27 @@ class CheckPlayersCommandTask(BaseTask):
             {'id': settings[SettingName.PLAYER_WITH_CHARACTER_ROLE_ID.value],
                 'channels': channels_to_read}
         ], PlayerCheckMethod.MESSAGE_ADD, 7)
-        message = message + (
-            "Players with created character "
-            "but without any game (from 7 days):"
-        )
-        for user in inactive_users:
-            last_message = None
-            if details_mode:
-                last_message = await self.last_messages.find_message_by_user(
-                    guild.id, user,
-                    settings[SettingName.OFFTOPIC_CATEGORY.value],
-                    GetLastMessageMode.CATEGORIES)
-            if last_message is not None:
-                message = message + """
-                - <@{0}> (last message {1} days ago on <#{2}>)""".format(
-                    user.id,
-                    (datetime.datetime.now() - last_message.created_at).days,
-                    last_message.channel.id)
-            else:
-                message = message + "\n- <@{0}>".format(user.id)
+        if len(inactive_users) > 0:
+            message = message + (
+                "\n\nPlayers with created character "
+                "but without any game (from 7 days):"
+            )
+            for user in inactive_users:
+                last_msg = None
+                if details_mode:
+                    last_msg = await self.last_msgs.find_message_by_user(
+                        guild.id, user,
+                        settings[SettingName.OFFTOPIC_CATEGORY.value],
+                        GetLastMessageMode.CATEGORIES)
+                if last_msg is not None:
+                    message = message + (
+                        "\n- <@{0}> "
+                        "(last message {1} days ago on <#{2}>)").format(
+                        user.id,
+                        (datetime.datetime.now() - last_msg.created_at).days,
+                        last_msg.channel.id)
+                else:
+                    message = message + "\n- <@{0}>".format(user.id)
+        if len(message) <= 0:
+            message = "Nothing to do..."
         await channel.send(message)

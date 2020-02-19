@@ -15,13 +15,13 @@ class LastMessages():
         if mode is GetLastMessageMode.CATEGORIES:
             for category_id in where:
                 category = discord.utils.find(
-                    lambda c: c.id == str(category_id), guild.categories)
+                    lambda c: c.id == int(category_id), guild.categories)
                 for channel in category.channels:
                     channels_to_read.append(channel)
         elif mode is GetLastMessageMode.CHANNELS:
             for channel_id in where:
                 channel = discord.utils.find(
-                    lambda c: c.id == str(channel_id), guild.channels)
+                    lambda c: c.id == int(channel_id), guild.channels)
                 channels_to_read.append(channel)
 
         for channel in channels_to_read:
