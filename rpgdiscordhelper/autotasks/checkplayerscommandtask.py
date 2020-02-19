@@ -30,7 +30,7 @@ class CheckPlayersCommandTask(BaseTask):
             {
                 'id': settings[
                     SettingName.PLAYER_WITHOUT_CHARACTER_ROLE_ID.value],
-                'channels': [settings[SettingName.CHARACTERS_CHANNEL_ID.value]]
+                'channels': settings[SettingName.CHARACTERS_CHANNEL_ID.value]
             }
         ], PlayerCheckMethod.JOIN_DATE, 2)
         message = "Players without characters (from 2 days):\n"

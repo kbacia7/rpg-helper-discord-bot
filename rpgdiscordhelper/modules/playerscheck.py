@@ -11,6 +11,9 @@ class PlayersCheck():
 
     async def check(self, server_id, dict_data, mode, arg_for_mode):
         roles_ids_to_check = [d['id'] for d in dict_data]
+        roles_ids_to_check = [
+            item for sublist in roles_ids_to_check for item in sublist
+        ]
         founded_user_names = []
         loaded_messages = []
         guild = discord.utils.find(

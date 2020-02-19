@@ -35,9 +35,8 @@ class CheckPlayersTask(BaseTask):
                         'id': settings[
                             SettingName.PLAYER_WITHOUT_CHARACTER_ROLE_ID.value
                         ],
-                        'channels': [
+                        'channels':
                             settings[SettingName.CHARACTERS_CHANNEL_ID.value]
-                        ]
                     }
                 ], PlayerCheckMethod.JOIN_DATE, 2)
             categories_to_read = setting[
