@@ -8,11 +8,12 @@ class PlayersCheck():
       pass
          
    async def check(self, server_id, dict_data, mode, arg_for_mode):
-      members = self.discord_client.get_all_members()
+       #members = discord.utils.find(lambda m: m.guild.id == server_id, s#self.discord_client.get_all_members()
       roles_ids_to_check = [d['id'] for d in dict_data]
       founded_user_names = []
       loaded_messages = []
       guild = discord.utils.find(lambda g: g.id == server_id, self.discord_client.guilds)
+      members = guild.members
       if mode is PlayerCheckMethod.MESSAGE_ADD:
          for channels_ids_to_check in [d['channels'] for d in dict_data]:
             for channel_id in channels_ids_to_check:
